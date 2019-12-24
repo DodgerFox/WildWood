@@ -1,0 +1,45 @@
+.menu
+  background-color #2d2c3a
+  position fixed
+  left 0
+  top 0
+  bottom 0
+  width 90px
+  display flex
+  flex-direction column
+  align-items center
+  padding 20px 0
+
+  &-user
+    width 50px
+    height 50px
+    border-radius 50%
+    border 2px solid #fd9e80
+    background-position center
+    background-size cover
+    margin-top 40px
+
+.nav
+  margin-top 35px
+  width 100%
+  position relative
+
+  &__line
+    content ''
+    position absolute
+    height 43px
+    width 2px
+    left 0
+    top 0
+    background-color #52a3ca
+
+  &-list
+    display flex
+    flex-direction column
+    align-items center
+
+  &-item
+    margin-top 30px
+    cursor pointer
+    &:first-child
+      margin-top 5px
