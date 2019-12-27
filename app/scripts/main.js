@@ -1,19 +1,23 @@
 'use strict'
 
 window.onload = () => {
-  range()
-  menu()
-  inputWithoutFocus()
-  scroll()
-  data()
-  $('select').selectize();
+  $(".timeline").mCustomScrollbar({
+    scrollInertia: 350,
+    autoHideScrollbar: true,
+    mouseWheel:{ scrollAmount: 200 }
+  });
+  $(".article").mCustomScrollbar({
+    scrollInertia: 350,
+    autoHideScrollbar: true,
+    mouseWheel:{ scrollAmount: 200 }
+  });
 }
-
-let arrayBodies;
-fetch('assets/data/bodies.json').then(function(response) {
-  response.json().then(function(arrayBodies) {
-  })
-})
+//
+// let arrayBodies;
+// fetch('assets/data/bodies.json').then(function(response) {
+//   response.json().then(function(arrayBodies) {
+//   })
+// })
 
 let inputWithoutFocus = () => {
   const inputs = document.querySelectorAll('input');
