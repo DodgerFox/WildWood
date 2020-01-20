@@ -11,96 +11,71 @@ window.onload = () => {
     autoHideScrollbar: true,
     mouseWheel:{ scrollAmount: 200 }
   });
+
+  panel()
 }
-//
-// let arrayBodies;
-// fetch('assets/data/bodies.json').then(function(response) {
-//   response.json().then(function(arrayBodies) {
-//   })
-// })
 
-let inputWithoutFocus = () => {
-  const inputs = document.querySelectorAll('input');
+let articles;
 
-  inputs.forEach(element => {
-    element.addEventListener('keyup', () => {
-      let val = element.value;
-      if(val.length > 0){
-        element.classList.add('active')
-      }else{
-        element.classList.remove('active')
-      }
-    })
+fetch('assets/data/articles.json').then( (response) => {
+  
+  response.json().then((result) => {
+    articles = result;
+    search(articles)
+    // init(articles)
   })
-}
 
-let menu = () => {
-  const button = document.querySelector('.header-gamburger'),
-  menu = document.querySelector('.nav');
+})
+
+
+
+
+
+let panel = () => {
+  const button = document.querySelector('.menu-user'),
+  panel = document.querySelector('.panel');
   button.addEventListener('click', () => {
-    button.classList.toggle('active');
-    menu.classList.toggle('open');
+    panel.classList.toggle('active');
   })
 }
 
-let scroll = () => {
-  $(".nav-list__item").on("click", function() {
-    $('.nav').removeClass('open');
-    var href = event.target.getAttribute('href');
-    event.preventDefault()
-    $("html,body").stop().animate({
-        scrollTop: $(href).offset().top
-    },1e3);
-  })
-}
+let search = () => {
+  const input = document.querySelector('.search-input input[type="search"]'),
+        posts = articles,
+        list = document.querySelector('.timeline-body');
 
-let data = () => {
-  const worker = [
-    "Чернов Алексей Владимирович",
-    "Санкт-Петербург",
-    "sniperr_89",
-    "darkdodgerfox@yandex.ru",
-    "Мне понравился уровень компании WM, реализованные проекты, и предлагаемый удаленный формат. Я надеюсь на интересные задачи, которые позволят мне развиваться в javascript."
-  ];
-  const inputs = document.querySelectorAll('.input input'),
-        txtarea = document.querySelector('.textarea');
-  txtarea.value = worker[4];
-  inputs.forEach((element, index) => {
-    let attr = element.name;
-    element.value = worker[index];
-  })
-}
 
-let range = () => {
-  $('input[type="range"]').rangeslider({
-  polyfill: false,
-  onSlide: function(position, value) {
-    const fill = document.querySelector('.rangeslider__fill'),
-          handle = document.querySelector('.rangeslider__handle');
-    switch (value) {
-      case 0:
-        fill.style.width = "0%";
-        handle.style.transform = "translate(-11px, 0)";
-        break;
-      case 100:
-        fill.style.width = "25%";
-        handle.style.transform = "translate(-6px, 0)";
-        break;
-      case 200:
-        fill.style.width = "50%";
-        handle.style.transform = "translate(0px, 0)";
-        break;
-      case 300:
-        fill.style.width = "50%";
-        handle.style.left = "48.3%";
-        break;
-      case 400:
-        fill.style.width = "100%";
-        handle.style.transform = "translate(9px, 0)";
-        break;
-      default:
-        alert( "Нет таких значений" );
+  input.addEventListener('keyup', () => {
+    
+   renderList()
+    
+  })
+  
+  let renderList = () => {
+    const marvelHeroes =  posts.filter(function(hero) {
+      const value = input.value || '';      
+      return hero.title.toUpperCase().indexOf(value.toUpperCase()) > -1;
+    });
+    
+    list.innerHTML = '';
+ 
+    if (marvelHeroes.length > 0) {
+      
+      marvelHeroes.forEach( ( article ) => {
+
+        const elem = `<article class="post"> <p class="post-title">` + article.title + `</p>`,
+              cats = '<div class="category"><div class="category-item snowboard"></div><div class="category-item ski"></div><div class="category-item skateboard"></div></div>',
+              info = `<div class="info"><div class="info-wrap"><p class="info__tag">` + article.tags + `</p><p class="info__date">` + article.date + `</p></div><div class="info-wrap"><a class="info__flame" href="#"><img src="assets/images/icon_flame.svg" class="mCS_img_loaded"></a><a class="info__user" href="#" style="background-image: url('` + article.avatar + `');"></a></div></div></article>`,
+              allElems = elem + cats + info;
+              
+        list.insertAdjacentHTML("beforeEnd", allElems);
+      })
+    }else{
+      list.insertAdjacentHTML("beforeEnd", "<p>Нетъ</p>");
     }
   }
-});
+
+  renderList()
+  // console.log(posts);
+  
 }
